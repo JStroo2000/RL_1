@@ -21,22 +21,29 @@ class BaseAgent:
     def select_action(self, s, policy='egreedy', epsilon=None, temp=None):
         
         if policy == 'greedy':
-            # TO DO: Add own code
-            a = np.random.randint(0,self.n_actions) # Replace this with correct action selection
+            # Greedy policy: choose the step with the highest expected reward->same as in DynamicProgramming.py
+            a = argmax(self.Q_sa[s,:])
             
         elif policy == 'egreedy':
             if epsilon is None:
                 raise KeyError("Provide an epsilon")
-                
-            # TO DO: Add own code
-            a = np.random.randint(0,self.n_actions) # Replace this with correct action selection
+            #epsilon-greedy policy: with probability epsilon, choose a random step, otherwise do the greedy step
+            if np.random.rand() < epsilon:
+                a = np.random.randint(0,self.n_actions)
+            else:
+                a = argmax(self.Q_sa[s,:])
                  
         elif policy == 'softmax':
             if temp is None:
                 raise KeyError("Provide a temperature")
                 
-            # TO DO: Add own code
-            a = np.random.randint(0,self.n_actions) # Replace this with correct action selection
+            #Boltzmann exploration: scale the probability of choosing a certain step with its Q-value
+            #Probability that non-highest Q-value steps are taken is determined by temperature parameter
+            #temp = 0 means it is the same as a greedy policy- implemented separately here to avoid division by 0
+            if temp == 0:
+                a = argmax(self.Q_sa[s,:])
+            else:
+                a = softmax(self.Q_sa[s,:],temp)
               
         return a
         

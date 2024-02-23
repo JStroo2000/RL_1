@@ -14,6 +14,8 @@ class QLearningAgent(BaseAgent):
         
     def update(self,s,a,r,s_next,done):
         # TO DO: Add own code
+        backup_target = r + BaseAgent.gamma * max(BaseAgent.Q_sa[s_next,:])
+        BaseAgent.Q_sa[s,a] = BaseAgent.Q_sa[s,a] + BaseAgent.learning_rate * (backup_target - BaseAgent.Q_sa[s,a])
         pass
 
 def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None, temp=None, plot=True, eval_interval=500):
