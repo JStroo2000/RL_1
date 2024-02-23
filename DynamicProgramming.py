@@ -7,7 +7,6 @@ By Thomas Moerland
 """
 
 import numpy as np
-from copy import copy
 from Environment import StochasticWindyGridworld
 from Helper import argmax
 
