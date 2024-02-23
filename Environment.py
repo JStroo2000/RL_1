@@ -34,7 +34,7 @@ class StochasticWindyGridworld:
         self.wind_blows_proportion = 0.9         
 
         self.reward_per_step = -1.0 # default reward on every step that does not reach a goal
-        self.goal_locations = [[7,3]] # [[6,2]] a vector specifying the goal locations in [[x1,y1],[x2,y2]] format
+        self.goal_locations = [[6,2]] # [[6,2]] a vector specifying the goal locations in [[x1,y1],[x2,y2]] format
         self.goal_rewards = [100] # a vector specifying the associated rewards with the goals in self.goal_locations, in [r1,r2] format
         
         # Initialize model
@@ -113,7 +113,7 @@ class StochasticWindyGridworld:
         self.agent_circle.center = self.agent_location+0.5
             
         # Draw figure
-        plt.pause(step_pause)    
+        plt.pause(step_pause)   
 
     def _state_to_location(self,state):
         ''' bring a state index to an (x,y) location of the agent '''
