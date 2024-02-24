@@ -43,7 +43,7 @@ class BaseAgent:
             if temp == 0:
                 a = argmax(self.Q_sa[s,:])
             else:
-                a = softmax(self.Q_sa[s,:],temp)
+                a = argmax(softmax(self.Q_sa[s,:],temp))
               
         return a
         

@@ -74,7 +74,7 @@ def experiment():
     
     #### Assignment 1: Dynamic Programming
     # Execute this assignment in DynamicProgramming.py
-    optimal_episode_return = 100 # set the optimal return per episode you found in the DP assignment here
+    optimal_episode_return = 83.678 # set the optimal return per episode you found in the DP assignment here
     
     #### Assignment 2: Effect of exploration
     policy = 'egreedy'
@@ -95,7 +95,7 @@ def experiment():
         Plot.add_curve(timesteps,learning_curve,label=r'softmax, $ \tau $ = {}'.format(temp))
     Plot.add_hline(optimal_episode_return, label="DP optimum")
     Plot.save('exploration.png')
-        
+    
     ###### Assignment 3: Q-learning versus SARSA
     policy = 'egreedy'
     epsilon = 0.1 # set epsilon back to original value 

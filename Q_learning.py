@@ -14,8 +14,8 @@ class QLearningAgent(BaseAgent):
         
     def update(self,s,a,r,s_next,done):
         # TO DO: Add own code
-        backup_target = r + BaseAgent.gamma * max(BaseAgent.Q_sa[s_next,:])
-        BaseAgent.Q_sa[s,a] = BaseAgent.Q_sa[s,a] + BaseAgent.learning_rate * (backup_target - BaseAgent.Q_sa[s,a])
+        backup_target = r + self.gamma * max(self.Q_sa[s_next,:])
+        self.Q_sa[s,a] = self.Q_sa[s,a] + self.learning_rate * (backup_target - self.Q_sa[s,a])
         pass
 
 def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None, temp=None, plot=True, eval_interval=500):
@@ -29,9 +29,22 @@ def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None
     eval_returns = []
     
     # TO DO: Write your Q-learning algorithm here!
-    
-    # if plot:
-    #    env.render(Q_sa=pi.Q_sa,plot_optimal_policy=True,step_pause=0.1) # Plot the Q-value estimates during Q-learning execution
+    i = 0
+    s = env.reset()
+    while i <= n_timesteps:
+        a = agent.select_action(s, policy, epsilon, temp)
+        s_next, r, done = eval_env.step(a)
+        agent.update(s,a,r,s_next,done)
+        if done:
+            env.reset()
+        else:
+            s = s_next
+        if i%eval_interval == 0:
+            eval_timesteps.append(i)
+            eval_returns.append(agent.Q_sa[s,a])
+            if plot:
+                env.render(Q_sa=agent.Q_sa,plot_optimal_policy=True,step_pause=0.1) # Plot the Q-value estimates during Q-learning execution
+        i += 1
 
 
     return np.array(eval_returns), np.array(eval_timesteps)   
@@ -44,7 +57,7 @@ def test():
     learning_rate = 0.1
 
     # Exploration
-    policy = 'egreedy' # 'egreedy' or 'softmax' 
+    policy = 'softmax' # 'egreedy' or 'softmax' 
     epsilon = 0.1
     temp = 1.0
     
