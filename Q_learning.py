@@ -36,7 +36,7 @@ def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None
         s_next, r, done = eval_env.step(a)
         agent.update(s,a,r,s_next,done)
         if done:
-            env.reset()
+            s = env.reset()
         else:
             s = s_next
         if i%eval_interval == 0:
