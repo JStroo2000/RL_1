@@ -14,8 +14,9 @@ class QLearningAgent(BaseAgent):
         
     def update(self,s,a,r,s_next,done):
         # TO DO: Add own code
-        backup_target = r + self.gamma * max(self.Q_sa[s_next,:])
-        self.Q_sa[s,a] = self.Q_sa[s,a] + self.learning_rate * (backup_target - self.Q_sa[s,a])
+        if not done:
+            backup_target = r + self.gamma * max(self.Q_sa[s_next,:])
+            self.Q_sa[s,a] = self.Q_sa[s,a] + self.learning_rate * (backup_target - self.Q_sa[s,a])
         pass
 
 def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None, temp=None, plot=True, eval_interval=500):
@@ -28,18 +29,24 @@ def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None
     eval_timesteps = []
     eval_returns = []
     
-    # TO DO: Write your Q-learning algorithm here!
-    i = 0
+    
+    i = 1
+    #set the state to the starting position defined in the environment
     s = env.reset()
     while i <= n_timesteps:
+        #select the next action according to the chosen policy
         a = agent.select_action(s, policy, epsilon, temp)
-        s_next, r, done = eval_env.step(a)
+        s_next, r, done = env.step(a)
+        #update the Q-value for this step
         agent.update(s,a,r,s_next,done)
         if done:
-            env.reset()
+            #reset the state to the starting position if goal is reached
+            s = env.reset()
         else:
+            #if goal is not reached, take another step
             s = s_next
         if i%eval_interval == 0:
+            #code for evaluation
             eval_timesteps.append(i)
             eval_returns.append(agent.Q_sa[s,a])
             if plot:
