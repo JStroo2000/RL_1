@@ -30,11 +30,11 @@ def sarsa(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None, tem
     eval_timesteps = []
     eval_returns = []
 
-    i = 0
+
     #set the state to the initial environment state and take an initial step
     s = env.reset()
     a = pi.select_action(s, policy, epsilon, temp)
-    while i <= n_timesteps:
+    for i in range(n_timesteps):
         s_next, r, done = env.step(a)
         #model the next step to use in updating the Q-values on-policy
         a_next = pi.select_action(s_next, policy, epsilon, temp)
@@ -51,10 +51,10 @@ def sarsa(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None, tem
         if i%eval_interval == 0:
             #code for evaluation
             eval_timesteps.append(i)
-            eval_returns.append(pi.Q_sa[s,a])
+            eval_returns.append(pi.evaluate(eval_env))
             if plot:
                 env.render(Q_sa=pi.Q_sa,plot_optimal_policy=True,step_pause=0.1) # Plot the Q-value estimates during SARSA execution
-        i += 1
+
 
     
 

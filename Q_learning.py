@@ -30,10 +30,9 @@ def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None
     eval_returns = []
     
     
-    i = 1
     #set the state to the starting position defined in the environment
     s = env.reset()
-    while i <= n_timesteps:
+    for i in range(n_timesteps):
         #select the next action according to the chosen policy
         a = agent.select_action(s, policy, epsilon, temp)
         s_next, r, done = env.step(a)
@@ -48,10 +47,9 @@ def q_learning(n_timesteps, learning_rate, gamma, policy='egreedy', epsilon=None
         if i%eval_interval == 0:
             #code for evaluation
             eval_timesteps.append(i)
-            eval_returns.append(agent.Q_sa[s,a])
+            eval_returns.append(agent.evaluate(eval_env))
             if plot:
                 env.render(Q_sa=agent.Q_sa,plot_optimal_policy=True,step_pause=0.1) # Plot the Q-value estimates during Q-learning execution
-        i += 1
 
 
     return np.array(eval_returns), np.array(eval_timesteps)   

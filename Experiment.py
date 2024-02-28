@@ -75,13 +75,13 @@ def experiment():
     #### Assignment 1: Dynamic Programming
     # Execute this assignment in DynamicProgramming.py
     optimal_episode_return = 83.678 # set the optimal return per episode you found in the DP assignment here
-    
+   
     #### Assignment 2: Effect of exploration
     policy = 'egreedy'
     epsilons = [0.03,0.1,0.3]
     learning_rate = 0.1
     backup = 'q'
-    Plot = LearningCurvePlot(title = 'Exploration: $\epsilon$-greedy versus softmax exploration')    
+    Plot = LearningCurvePlot(title = r'Exploration: $\epsilon$-greedy versus softmax exploration')    
     Plot.set_ylim(-100, 100) 
     for epsilon in epsilons:        
         learning_curve, timesteps = average_over_repetitions(backup, n_repetitions, n_timesteps, max_episode_length, learning_rate, 
@@ -123,12 +123,13 @@ def experiment():
         learning_curve, timesteps = average_over_repetitions(backup, n_repetitions, n_timesteps, max_episode_length, learning_rate, 
                                               gamma, policy, epsilon, temp, smoothing_window, plot, n, eval_interval)
         Plot.add_curve(timesteps,learning_curve,label=r'{}-step Q-learning'.format(n))
+
     backup = 'mc'
     learning_curve, timesteps = average_over_repetitions(backup, n_repetitions, n_timesteps, max_episode_length, learning_rate, 
                                           gamma, policy, epsilon, temp, smoothing_window, plot, n, eval_interval)
     Plot.add_curve(timesteps,learning_curve,label='Monte Carlo')        
     Plot.add_hline(optimal_episode_return, label="DP optimum")
-    Plot.save('depth.png')
+    Plot.save('depth.pdf')
 
 if __name__ == '__main__':
     experiment()
