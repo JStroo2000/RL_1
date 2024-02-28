@@ -35,14 +35,15 @@ def monte_carlo(n_timesteps, max_episode_length, learning_rate, gamma,
     eval_timesteps = []
     eval_returns = []
 
-    # TO DO: Write your Monte Carlo RL algorithm here!
     i = 0
     while i < n_timesteps:
+        #Setup variables for this episode
         s = env.reset()
         a_ep = []
         s_ep = [s]
         r_ep = []
         for t in range(max_episode_length):
+            #Gather the values for this episode
             a = pi.select_action(s_ep[t],policy, epsilon, temp)
             s_next, r, done = env.step(a)
             a_ep.append(a)
@@ -52,14 +53,15 @@ def monte_carlo(n_timesteps, max_episode_length, learning_rate, gamma,
             if done:
                 break
             if i%eval_interval == 0 :
+                #Code for evaluation
                 eval_timesteps.append(i)
                 eval_returns.append(pi.evaluate(eval_env))
                 if plot:
                     env.render(Q_sa=pi.Q_sa,plot_optimal_policy=True,step_pause=0.1) # Plot the Q-value estimates during Monte Carlo RL execution
         pi.update(s_ep, a_ep, r_ep)
-    if len(eval_returns) != (int(n_timesteps/eval_interval)+1):
+    #Ensures all runs have the same number of evaluations, important in the case of averaging over multiple runs
+    if len(eval_returns) != (int(n_timesteps/eval_interval)):
         eval_returns = np.pad(eval_returns, int(n_timesteps/eval_interval)-len(eval_returns),constant_values=eval_returns[-1])
-    
     return np.array(eval_returns), np.array(eval_timesteps) 
     
 def test():
